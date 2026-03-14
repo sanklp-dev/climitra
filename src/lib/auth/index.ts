@@ -7,6 +7,7 @@ import bcrypt from "bcryptjs";
 import type { AppRole } from "./session";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
   providers: [
     Credentials({
       name: "credentials",
