@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 3000",
-    "build": "next build && cp -r .next/static .next/standalone/.next/static && mkdir -p .next/standalone/public && cp -r public/. .next/standalone/public/ 2>/dev/null; true",
-    "start": "node .next/standalone/server.js",
+    "build": "next build",
+    "start": "next start -p ${PORT:-3000} -H ${HOSTNAME:-0.0.0.0}",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
