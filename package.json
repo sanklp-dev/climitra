@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --port 3000",
-    "build": "next build",
+    "build": "next build && npm run db:setup || true",
+    "db:setup": "npx drizzle-kit push && npx tsx src/lib/db/seed.ts",
     "start": "next start -p ${PORT:-3000} -H ${HOSTNAME:-0.0.0.0}",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
@@ -14,12 +15,16 @@
   "dependencies": {
     "@auth/drizzle-adapter": "^1.11.1",
     "@tailwindcss/postcss": "^4.2.1",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/leaflet": "^1.9.18",
     "@types/node": "^25.5.0",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
+    "@types/uuid": "^10.0.0",
     "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "drizzle-kit": "^0.31.3",
     "drizzle-orm": "^0.45.1",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.577.0",
@@ -33,13 +38,8 @@
     "recharts": "^3.8.0",
     "tailwind-merge": "^3.5.0",
     "tailwindcss": "^4.2.1",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "uuid": "^13.0.0",
-    "@types/bcryptjs": "^2.4.6",
-    "@types/leaflet": "^1.9.18",
-    "@types/uuid": "^10.0.0"
-  },
-  "devDependencies": {
-    "drizzle-kit": "^0.31.3"
+    "uuid": "^13.0.0"
   }
 }
