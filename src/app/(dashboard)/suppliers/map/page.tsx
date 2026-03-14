@@ -54,12 +54,11 @@ export default function SupplierMapPage() {
       params.set("limit", "500"); // Fetch more for map view
 
       const res = await fetch(`/api/suppliers?${params.toString()}`);
+      if (!res.ok) return;
       const data = await res.json();
 
-      if (res.ok) {
-        setSuppliers(data.suppliers);
-        setTotal(data.pagination.total);
-      }
+      setSuppliers(data.suppliers || []);
+      setTotal(data.pagination?.total ?? 0);
     } catch (error) {
       console.error("Error fetching suppliers:", error);
     } finally {

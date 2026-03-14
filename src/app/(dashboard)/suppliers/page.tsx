@@ -116,13 +116,12 @@ export default function SuppliersPage() {
       params.set("limit", "25");
 
       const res = await fetch(`/api/suppliers?${params.toString()}`);
+      if (!res.ok) return;
       const data = await res.json();
 
-      if (res.ok) {
-        setSuppliers(data.suppliers);
-        setTotalPages(data.pagination.totalPages);
-        setTotal(data.pagination.total);
-      }
+      setSuppliers(data.suppliers || []);
+      setTotalPages(data.pagination?.totalPages ?? 1);
+      setTotal(data.pagination?.total ?? 0);
     } catch (error) {
       console.error("Error fetching suppliers:", error);
     } finally {

@@ -55,6 +55,7 @@ export default function QualityTestsPage() {
   async function fetchSuppliers() {
     try {
       const res = await fetch("/api/suppliers?limit=200");
+      if (!res.ok) return;
       const data = await res.json();
       setSuppliers(
         (data.suppliers || []).map((s: { id: string; businessName: string }) => ({
@@ -75,8 +76,9 @@ export default function QualityTestsPage() {
       if (filterSupplier !== "all") params.set("supplierId", filterSupplier);
 
       const res = await fetch(`/api/quality?${params.toString()}`);
+      if (!res.ok) return;
       const data = await res.json();
-      setTests(data);
+      setTests(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Failed to fetch quality tests:", error);
     } finally {

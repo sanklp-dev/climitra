@@ -65,6 +65,7 @@ export default function PaymentsPage() {
       if (filterStatus !== "all") params.set("status", filterStatus);
 
       const res = await fetch(`/api/payments?${params.toString()}`);
+      if (!res.ok) return;
       const data = await res.json();
       setPayments(data.payments || []);
       setSummary(

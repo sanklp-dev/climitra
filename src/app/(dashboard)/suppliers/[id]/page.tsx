@@ -111,11 +111,10 @@ export default function SupplierDetailPage({
   const fetchSupplier = useCallback(async () => {
     try {
       const res = await fetch(`/api/suppliers/${id}`);
+      if (!res.ok) return;
       const data = await res.json();
-      if (res.ok) {
-        setSupplier(data.supplier);
-        setEditData(data.supplier);
-      }
+      setSupplier(data.supplier || null);
+      setEditData(data.supplier || {});
     } catch (error) {
       console.error("Error fetching supplier:", error);
     }
@@ -124,10 +123,9 @@ export default function SupplierDetailPage({
   const fetchNotes = useCallback(async () => {
     try {
       const res = await fetch(`/api/suppliers/notes?supplierId=${id}`);
+      if (!res.ok) return;
       const data = await res.json();
-      if (res.ok) {
-        setNotes(data.notes);
-      }
+      setNotes(data.notes || []);
     } catch (error) {
       console.error("Error fetching notes:", error);
     }
@@ -136,10 +134,9 @@ export default function SupplierDetailPage({
   const fetchOrders = useCallback(async () => {
     try {
       const res = await fetch(`/api/orders?supplierId=${id}`);
+      if (!res.ok) return;
       const data = await res.json();
-      if (res.ok) {
-        setOrders(Array.isArray(data) ? data : data.orders || []);
-      }
+      setOrders(Array.isArray(data) ? data : data.orders || []);
     } catch {
       // Orders endpoint may not exist yet
     }

@@ -97,13 +97,20 @@ export default function DashboardPage() {
     fetchDashboard();
   }, []);
 
+  const [error, setError] = useState<string | null>(null);
+
   async function fetchDashboard() {
     try {
       const res = await fetch("/api/dashboard");
+      if (!res.ok) {
+        setError(res.status === 401 ? "Please log in to view the dashboard." : "Failed to load dashboard data.");
+        return;
+      }
       const json = await res.json();
       setData(json);
-    } catch (error) {
-      console.error("Failed to fetch dashboard data:", error);
+    } catch (err) {
+      console.error("Failed to fetch dashboard data:", err);
+      setError("Failed to connect to the server.");
     } finally {
       setLoading(false);
     }
@@ -157,13 +164,13 @@ export default function DashboardPage() {
     return (
       <div className="flex items-center justify-center py-24">
         <p className="text-lg text-muted-foreground">
-          Failed to load dashboard data.
+          {error || "Failed to load dashboard data."}
         </p>
       </div>
     );
   }
 
-  const pieData = data.ordersByStatus.map((item) => ({
+  const pieData = (data.ordersByStatus || []).map((item) => ({
     name: STATUS_LABELS[item.status || ""] || item.status || "Unknown",
     value: item.count,
   }));

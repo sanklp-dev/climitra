@@ -105,10 +105,9 @@ export default function ScrapingPage() {
   const fetchJobs = useCallback(async () => {
     try {
       const response = await fetch("/api/apify/jobs");
+      if (!response.ok) return;
       const data = await response.json();
-      if (response.ok) {
-        setJobs(data.jobs || []);
-      }
+      setJobs(data.jobs || []);
     } catch {
       // Silently fail on background fetch
     } finally {
@@ -189,13 +188,12 @@ export default function ScrapingPage() {
 
     try {
       const response = await fetch(`/api/apify/jobs/${jobId}`);
+      if (!response.ok) return;
       const data = await response.json();
 
-      if (response.ok) {
-        setReviewJob(data.job);
-        // Also refresh jobs list in case status changed
-        fetchJobs();
-      }
+      setReviewJob(data.job || null);
+      // Also refresh jobs list in case status changed
+      fetchJobs();
     } catch {
       // use local data
       const localJob = jobs.find((j) => j.id === jobId) || null;
